@@ -6,12 +6,20 @@
 /*   By: gpirozzi <giovannipirozzi12345@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 15:24:33 by gpirozzi          #+#    #+#             */
-/*   Updated: 2025/02/05 12:32:35 by gpirozzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:04:33 by gpirozzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+/**
+ * @brief Frees all the images loaded in the mlx structure.
+ *
+ * Checks each image pointer in the mlx struct and destroys it if not NULL,
+ * to properly release graphical resources.
+ *
+ * @param mlx Pointer to the mlx structure containing image references.
+ */
 void	free_image(t_mlx *mlx)
 {
 	if (mlx->sf)
@@ -34,6 +42,15 @@ void	free_image(t_mlx *mlx)
 		mlx_destroy_image(mlx->con, mlx->p_sx);
 }
 
+/**
+ * @brief Handles window closing event and frees all allocated resources.
+ *
+ * Destroys all images, frees the map matrix, destroys the window and display,
+ * then frees the mlx context and exits the program.
+ *
+ * @param map Void pointer expected to be castable to t_map*.
+ * @return int Always returns 0.
+ */
 int	close_window(void *map)
 {
 	t_map	*mapp;
@@ -59,6 +76,14 @@ int	close_window(void *map)
 	return (0);
 }
 
+/**
+ * @brief Frees a NULL-terminated matrix of strings.
+ *
+ * Iterates over each string, frees it and finally frees the matrix pointer itself.
+ * Sets pointers to NULL after freeing for safety.
+ *
+ * @param matrix The matrix of strings to free.
+ */
 void	ft_free_matrix(char **matrix)
 {
 	int	i;

@@ -6,12 +6,21 @@
 /*   By: gpirozzi <giovannipirozzi12345@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 10:20:46 by gpirozzi          #+#    #+#             */
-/*   Updated: 2025/02/26 17:29:45 by gpirozzi         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:06:00 by gpirozzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+/**
+ * @brief Handles player movement based on the pressed key.
+ *
+ * If the key is W, A, S, or D, calls move_player with updated coordinates
+ * corresponding to moving up, left, down, or right.
+ *
+ * @param map Pointer to the map structure containing state and positions.
+ * @param keysym Keycode of the pressed key (XK_w, XK_a, XK_s, XK_d).
+ */
 void	ft_movevent(t_map *map, int keysym)
 {
 	if (keysym == XK_w || keysym == XK_a || keysym == XK_s || keysym == XK_d)
@@ -27,6 +36,16 @@ void	ft_movevent(t_map *map, int keysym)
 	}
 }
 
+/**
+ * @brief Handles keyboard input and related actions.
+ *
+ * Calls ft_movevent for movement keys.
+ * If the ESC key is pressed, closes the window, frees resources, and exits the program.
+ *
+ * @param keysym Keycode of the pressed key.
+ * @param map Pointer to the map structure.
+ * @return int Always returns 0.
+ */
 int	handle_input(int keysym, t_map *map)
 {
 	ft_movevent(map, keysym);
@@ -54,6 +73,16 @@ int	handle_input(int keysym, t_map *map)
 	return (0);
 }
 
+/**
+ * @brief Creates and initializes the game window and graphical resources.
+ *
+ * Allocates the mlx structure, initializes the connection, creates the window,
+ * loads images, draws the initial map, and sets event callbacks.
+ * Starts the MLX main loop.
+ *
+ * @param map Pointer to the map structure.
+ * @return int 0 on success, -1 on error.
+ */
 int	ft_create_window(t_map *map)
 {
 	map->mlx = malloc(sizeof(t_mlx));
@@ -71,7 +100,7 @@ int	ft_create_window(t_map *map)
 		return (mlx_destroy_display(map->mlx->con),
 			free(map->mlx->con), free(map->mlx), -1);
 	if (ft_create_image(map->mlx) == -1)
-		return (ft_printf("Error\nErrore nel caricamento delle i"), -1);
+		return (ft_printf(2, "Error\nErrore nel caricamento delle i"), -1);
 	ft_draw_background(map->mlx, map);
 	ft_draw(map->mlx, map);
 	mlx_hook(map->mlx->wp, 2, 1L << 0, handle_input, map);
@@ -81,6 +110,15 @@ int	ft_create_window(t_map *map)
 	return (0);
 }
 
+/**
+ * @brief Main setup function after parsing the map.
+ *
+ * Fills the matrix, checks horizontal and vertical walls, verifies map elements,
+ * duplicates the matrix and uses flood fill to check reachability.
+ * If all checks pass, creates the window and starts the game.
+ *
+ * @param map Pointer to the map structure.
+ */
 void	ft_for_main(t_map *map)
 {
 	map->matrix = ft_fill_matrix(map);
@@ -92,7 +130,7 @@ void	ft_for_main(t_map *map)
 			{
 				if (ft_check_elements(map) == 0)
 				{
-					ft_dup_matrix(map);
+					ft_duplicate_matrix(map);
 					flood_fill(map, map->y_p, map->x_p, '1');
 					if (ft_check_the_dup(map) == 0)
 					{
@@ -110,6 +148,16 @@ void	ft_for_main(t_map *map)
 	}
 }
 
+/**
+ * @brief Program entry point.
+ *
+ * Checks that the input file is passed and has a .ber extension,
+ * runs parsing, and starts the game if the map is valid.
+ *
+ * @param argc Number of arguments passed.
+ * @param argv Array of argument strings.
+ * @return int Always returns 0.
+ */
 int	main(int argc, char *argv[])
 {
 	t_map	map;
