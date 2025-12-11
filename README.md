@@ -26,7 +26,7 @@ The protagonist moves within a 2D grid. To win the level:
 * **Sprite Management:** Loading `.xpm` textures for walls, floor, player, and items.
 * **Smooth Movement:** Keyboard input handling (WASD / Arrows).
 
-### 🌟 Bonus Features (if enabled)
+### 🌟 Bonus Features
 * **Patrol Enemies:** Presence of enemies that move and kill the player upon contact.
 * **Animations:** Animated sprites for the player or enemies.
 * **Move Counter:** Display of the number of steps directly on the screen.
