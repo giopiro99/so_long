@@ -76,6 +76,7 @@ P: Player (Start)
 E: Exit
 C: Collectible
 M: Enemy (Monster - Bonus)
+
 Example of a valid map:
 
 1111111111111
